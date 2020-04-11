@@ -3,9 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 import Formulario from './componentes/Formulario';
 import Header from './componentes/Header';
-import Cita from './componentes/Cita';
+import Citas from './componentes/Cita';
 
 function App() {
+  //crear citas
+
   return (
     <Fragment>
     <div className="App">
@@ -15,7 +17,7 @@ function App() {
 <Formulario></Formulario>
     </div>
     <div class="col-md-6">
-<Cita></Cita>
+<Citas></Citas>
     </div>
     </div>
     </div>

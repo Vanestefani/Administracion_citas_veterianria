@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-
+import uuid from "uuid/v4";
 const Formulario = () => {
   const [cita, actualizarCita] = useState({
     mascota: "",
@@ -8,26 +8,52 @@ const Formulario = () => {
     hora: "",
     sintomas: "",
   });
-  //funcion cuando se escribe
-  const actualizarState = e => {
-    actualizarCita({
-        ...cita,
-        [e.target.name]:e.target.value
-    })
- // Extraer los valores
-  };
-  const { mascota, propietario, fecha, hora, sintomas } = cita;
-  const submitCita = e => {
+  //error campor vacio
+  const [error, actualizarError] = useState(false);
 
-  }
+  //funcion cuando se escribe
+  const actualizarState = (e) => {
+    actualizarCita({
+      ...cita,
+      [e.target.name]: e.target.value,
+    });
+  };
+  //Extraer datos
+  const { mascota, propietario, fecha, hora, sintomas } = cita;
+  const submitCita = (e) => {
+    //impide que se envie por get
+    e.preventDefault();
+
+    console.log("enviando");
+    //Validar
+    if (
+      mascota.trim() === "" ||
+      propietario.trim() === "" ||
+      fecha.trim() === "" ||
+      hora.trim() === "" ||
+      sintomas.trim() === ""
+    ) {
+      actualizarError(true);
+      return;
+    }
+    // Eliminar el mensaje previo
+    actualizarError(false);
+    //Asignar  un id
+    cita.id = uuid();
+    console.log(cita);
+  };
+
   return (
     <Fragment>
       <div className="container">
         <h1>Añadir cita</h1>
-        <form className="form-group"
-        onSubmit={submitCita}
-        >
+        {error ? (
+          <p className="alert alert-danger" role="alert">
+            Todos los campos son obligatorios
+          </p>
+        ) : null}
 
+        <form className="form-group" onSubmit={submitCita}>
           <label>Nombre Mascota</label>
           <input
             type="text"
@@ -54,7 +80,7 @@ const Formulario = () => {
             name="fecha"
             className="form-control"
             onChange={actualizarState}
-              value={fecha}
+            value={fecha}
           />
 
           <label>Hora</label>
@@ -63,7 +89,7 @@ const Formulario = () => {
             name="hora"
             className="form-control"
             onChange={actualizarState}
-              value={hora}
+            value={hora}
           />
 
           <label>Síntomas</label>
@@ -71,7 +97,7 @@ const Formulario = () => {
             className="form-control"
             name="sintomas"
             onChange={actualizarState}
-              value={sintomas}
+            value={sintomas}
           ></textarea>
 
           <button type="submit" className="btn btn-primary">
