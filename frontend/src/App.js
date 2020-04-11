@@ -1,27 +1,39 @@
-import React , {Fragment} from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Formulario from './componentes/Formulario';
-import Header from './componentes/Header';
-import Citas from './componentes/Cita';
+import React, { Fragment, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Formulario from "./componentes/Formulario";
+import Header from "./componentes/Header";
+import Citas from "./componentes/Citas";
 
 function App() {
-  //crear citas
-
+  //arreglo citas
+  const [citas, guardarCitas] = useState([]);
+  //Agregar citas
+  const crearCitas = (cita) => {
+    guardarCitas([...citas, cita]);
+  };
+  //Eliminar citas
+  // Función que elimina una cita por su id
+  const eliminarCita = (id) => {
+    const nuevasCitas = citas.filter((cita) => cita.id !== id);
+    guardarCitas(nuevasCitas);
+  };
   return (
     <Fragment>
-    <div className="App">
-<Header></Header>
-<div className="row">
-<div class="col-md-6">
-<Formulario></Formulario>
-    </div>
-    <div class="col-md-6">
-<Citas></Citas>
-    </div>
-    </div>
-    </div>
-
+      <div className="App">
+        <Header></Header>
+        <div className="row">
+          <div class="col-md-6">
+            <Formulario crearCitas={crearCitas}></Formulario>
+          </div>
+          <div class="col-md-6">
+            <h2>Citas</h2>
+            {citas.map((cita) => (
+              <Citas key={cita.id} cita={cita}  eliminarCita={eliminarCita}></Citas>
+            ))}
+          </div>
+        </div>
+      </div>
     </Fragment>
   );
 }
